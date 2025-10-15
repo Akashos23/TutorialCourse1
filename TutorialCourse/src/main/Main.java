@@ -1,13 +1,17 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import chart.BarChartExample;
+import chart.BarChartFibonacci;
+import chart.BarChartReverseWord;
 import factorial.Factorial;
 import fibonacci.Fibonacci;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import reverse.Reverse;
 
-public class Main {
+public class Main{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -31,13 +35,24 @@ public class Main {
 		System.out.println("Recursive fibonacci solution -> " +  fibonacci.RecursiveFib(5));
 		System.out.println("Recursive fibonacci solution -> " +  fibonacci.RecursiveFib(8));
 		System.out.println("Recursive fibonacci solution -> " +  fibonacci.RecursiveFib(12));
-	//	System.out.println("Recursive fibonacci solution -> " +  fibonacci.RecursiveFib(100));
+		
+		long startTimeRecursiveFibonacci = System.nanoTime();
+	  //  System.out.println("Recursive fibonacci solution -> " +  fibonacci.RecursiveFib(50));
+		long endTimeRecursiveFibonacci = System.nanoTime();
+		long timeRecursiveFibonacci = endTimeRecursiveFibonacci - startTimeRecursiveFibonacci;
 		System.out.println("------------------------------------------------------------------------");
 		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(0));
 		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(5));
 		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(8));
 		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(12));
-		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(100));
+		
+		long startTimeIterativeFibonacci = System.nanoTime();
+		System.out.println("Iterative fibonacci solution -> " +  fibonacci.IterativeFib(50));
+		long endTimeIterativeFibonacci = System.nanoTime();
+		long timeIterativeFibonacci = endTimeIterativeFibonacci - startTimeIterativeFibonacci;
+		
+		ArrayList<Long> listIterativeFibonacci = new ArrayList<>(Arrays.asList(timeIterativeFibonacci));
+		ArrayList<Long> listRecursiveFibonacci = new ArrayList<>(Arrays.asList(timeRecursiveFibonacci));
 		
 		//Reverse
 		Reverse reverse = new Reverse();
@@ -60,10 +75,7 @@ public class Main {
 		System.out.println("Recursive Reverse solution -> " +  reverse.reverseRecursive("ppp"));
 		System.out.println("Recursive Reverse solution -> " +  reverse.reverseRecursive("mosb"));
 		
-		ArrayList<Long> listRecursive = new ArrayList<>();
-		listRecursive.add(timeRecursiveReverse);
-		listRecursive.add(time2RecursiveReverse);
-		listRecursive.add(time3RecursiveReverse);
+		ArrayList<Long> listRecursive = new ArrayList<>(Arrays.asList(timeRecursiveReverse, time2RecursiveReverse, time3RecursiveReverse));
 		
 		System.out.println("------------------------------------------------------------------------");
 		long startTimeIterativeReverse = System.nanoTime();
@@ -81,22 +93,39 @@ public class Main {
 		System.out.println("Iterative Reverse solution -> " +  reverse.reverseIterative("aujourd'hui"));
 		long endTime3IterativeReverse = System.nanoTime();
 		long time3IterativeReverse = endTime3IterativeReverse - startTime3IterativeReverse;
-		
-		
-		ArrayList<Long> listIterative = new ArrayList<>();
-		listIterative.add(timeIterativeReverse);
-		listIterative.add(time2IterativeReverse);
-		listIterative.add(time3IterativeReverse);
-		
+
+		ArrayList<Long> listIterative = new ArrayList<>(Arrays.asList(timeIterativeReverse, time2IterativeReverse, time3IterativeReverse));
+
 		System.out.println("Iterative Reverse solution -> " +  reverse.reverseIterative("ppp"));
 		System.out.println("Iterative Reverse solution -> " +  reverse.reverseIterative("mosb"));
 		
-		BarChartExample barChart = new BarChartExample(listIterative, listRecursive);
-		//barChart.launch(args);
+		ArrayList<String> name = new ArrayList<String>(Arrays.asList("abc","odd","aujourd'hui"));
+		ArrayList<String> nameFibonacci = new ArrayList<String>(Arrays.asList("50"));
 		
-		
-		
+		graphReverseWord(name, listRecursive, listIterative, args);
+		//graphFibonacci(nameFibonacci, listRecursiveFibonacci, listIterativeFibonacci, args);
 
 	}
-
+	
+	public static void graphReverseWord(ArrayList<String> name, ArrayList<Long> listeTimeExecutionRecursivityReverse, ArrayList<Long> listeTimeExecutionIterativeReverse, String[] args) {
+		BarChartReverseWord.listeTimeExecutionRecursivityReverse = listeTimeExecutionRecursivityReverse;
+        BarChartReverseWord.listeTimeExecutionIterativeReverse = listeTimeExecutionIterativeReverse;
+        BarChartReverseWord.title = "ReverseWord Iterative VS Recursive";
+        BarChartReverseWord.label = "ReverseWord";
+        BarChartReverseWord.name = name;
+        BarChartReverseWord.NameSerie1 = "ReverseWord Iterative";
+        BarChartReverseWord.NameSerie2 = "ReverseWord Recursive";
+        Application.launch(BarChartReverseWord.class, args);
+	}
+	
+	public static void graphFibonacci(ArrayList<String> name, ArrayList<Long> listeTimeExecutionRecursivityReverse, ArrayList<Long> listeTimeExecutionIterativeReverse, String[] args) {
+		BarChartFibonacci.listeTimeExecutionRecursivityReverse = listeTimeExecutionRecursivityReverse;
+		BarChartFibonacci.listeTimeExecutionIterativeReverse = listeTimeExecutionIterativeReverse;
+		BarChartFibonacci.title = "Fibonacci Iterative VS Recursive";
+		BarChartFibonacci.label = "Fibonacci";
+		BarChartFibonacci.name = name;
+		BarChartFibonacci.NameSerie1 = "Fibonacci Iterative";
+		BarChartFibonacci.NameSerie2 = "Fibonacci Recursive";
+        Application.launch(BarChartFibonacci.class, args);
+	}
 }
